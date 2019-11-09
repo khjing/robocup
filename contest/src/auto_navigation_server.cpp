@@ -1,0 +1,61 @@
+#include "ros/ros.h"
+#include "contest/AutoNavigation.h"
+#include <actionlib/client/simple_action_client.h>
+#include "tf/transform_datatypes.h"
+#include <move_base_msgs/MoveBaseAction.h>
+
+typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
+ 
+
+bool navigation(contest::AutoNavigation::Request &req,
+		contest::AutoNavigation::Response &res)
+{
+	//tell the action client that we want to spin a thread by default
+	MoveBaseClient ac("move_base", true);
+
+	//wait for the action server to come up
+	while(!ac.waitForServer(ros::Duration(5.0))){
+		ROS_INFO("Waiting for the move_base action server to come up");
+	}
+
+	move_base_msgs::MoveBaseGoal goal;
+
+	//we'll send a goal to the robot
+	goal.target_pose.header.frame_id = "base_link";
+        //goal.target_pose.header.frame_id = "map";
+
+	goal.target_pose.header.stamp = ros::Time::now();
+
+	goal.target_pose.pose = req.pose;
+
+
+	ROS_INFO("Sending goal");
+	ac.sendGoal(goal);
+
+	ac.waitForResult();
+
+	if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+	{
+		ROS_INFO("Moving succeeded");
+		res.state = 0;
+	}	
+	else
+	{
+		ROS_INFO("The base failed to move to the goal");
+		res.state = -1;
+		return false;
+	}
+
+	return true;
+ }
+
+int main(int argc, char **argv)
+{
+	ros::init(argc, argv, "auto_navigation_server");
+	ros::NodeHandle n;
+	
+	ros::ServiceServer service = n.advertiseService("auto_navigation", navigation);
+	ROS_INFO("Ready for navigation");
+	ros::spin();
+	return 0;
+}

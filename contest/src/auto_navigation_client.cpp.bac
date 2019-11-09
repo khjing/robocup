@@ -1,0 +1,15 @@
+#include "ros/ros.h"
+#include "contest/AutoNavigation.h"
+#include <cstdlib>
+
+int main(int argc, char **argv)
+{
+	ros::init(argc, argv, "auto_navigation");
+	
+	ros::NodeHandle n;
+	ros::ServiceClient client = n.serviceClient<contest::AutoNavigation>("auto_navigation");
+	
+	contest::AutoNavigation srv;
+	
+	return 0;
+}

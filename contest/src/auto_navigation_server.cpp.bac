@@ -1,0 +1,27 @@
+#include "ros/ros.h"
+#include "contest/AutoNavigation.h"
+#include <actionlib/client/simple_action_client.h>
+#include "tf/transform_datatypes.h"
+#include <move_base_msgs/MoveBaseAction.h>
+
+typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
+ 
+
+
+bool navigation(contest::AutoNavigation::Request &req,
+		contest::AutoNavigation::Response &res)
+{
+	
+}
+
+int main(int argc, char **argv)
+{
+	ros::init(argc, argv, "auto_navigation_server");
+	ros::NodeHandle n;
+	
+	ros::ServiceServer service = n.advertiseService("auto_navigation", navigation);
+	ROS_INFO("navigating");
+	ros::spin();
+
+	return 0;
+}
