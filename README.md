@@ -1,2 +1,3 @@
 # robocup
-Created by SEU robocup team
+Created by SEU robocup team  
+This directory contains our training program
