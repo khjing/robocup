@@ -30,3 +30,5 @@ requirements:
  ```xml
  <param name="base_global_planner" value="astar_planner/AstarPlanner"/>
  ```
+ 
+ Further questions? Contact me: kkhjing@163.com
