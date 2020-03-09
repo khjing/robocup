@@ -27,6 +27,6 @@ requirements:
  - Since you already compiled the source code in turtlebot_src, your environment is ready
  - maps: see maps.zip
  - you also have to configure your move_base.launch description in $(turtlebot_navigation)/launch/includes/move_base.xml. Add a parameter:  
- '''xml
+ ```xml
  <param name="base_global_planner" value="astar_planner/AstarPlanner"/>
- '''
+ ```
